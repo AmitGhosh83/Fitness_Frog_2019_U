@@ -41,12 +41,27 @@ namespace Treehouse.FitnessFrog.Controllers
 
         public ActionResult Add()
         {
-            return View();
+            var entry = new Entry()
+            {
+                Date= DateTime.Today
+            };
+
+            //populating the Drop Down list
+            ViewBag.ActivitiesSelectListItems = new SelectList(Data.Data.Activities, 
+                                                                "Id", "Name");
+            return View(entry);
         }
         [HttpPost]
         public ActionResult Add( Entry entry)
         {
-            return View();
+            if(ModelState.IsValid)
+            {
+                _entriesRepository.AddEntry(entry);
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.ActivitiesSelectListItems = new SelectList(Data.Data.Activities, "Id", "Name");
+            return View(entry);
         }
 
 
